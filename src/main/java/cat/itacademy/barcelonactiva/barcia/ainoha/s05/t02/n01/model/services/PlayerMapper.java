@@ -7,7 +7,7 @@ public class PlayerMapper {
 
     public static PlayerDto mapToPlayerDto (Player player){
         PlayerDto playerDto = new PlayerDto();
-        playerDto.setId(player.getId());
+        playerDto.setIdPlayer(player.getIdPlayer());
         playerDto.setName(player.getName());
         playerDto.setRegistrationDate(player.getRegistrationDate());
         playerDto.setGamesWin(player.getGamesWin());
@@ -21,7 +21,7 @@ public class PlayerMapper {
 
     public static Player mapToPlayer (PlayerDto playerDto){
         Player player = new Player();
-            player.setId(playerDto.getId());
+            player.setIdPlayer(playerDto.getIdPlayer());
             player.setName(playerDto.getName());
             player.setRegistrationDate(playerDto.getRegistrationDate());
             player.setGamesWin(playerDto.getGamesWin());

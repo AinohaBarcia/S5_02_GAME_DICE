@@ -4,24 +4,32 @@ import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Playe
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Rollback(value = false)
 class IPlayerRepositoriTest {
     @Autowired
     private IPlayerRepositori iPlayerRepositori;
-
     @Test
-    void testCreatePlayer(){
-        Player savePlayer = iPlayerRepositori.save(new Player("TestPlayer"));
-        assertThat(savePlayer.getId()).isGreaterThan(0);
+    void testFindByName() {
 
+        Player player = new Player();
+        iPlayerRepositori.save(player);
+
+
+        Optional<Player> foundPlayer = iPlayerRepositori.findByName("TestPlayer");
+
+
+        assertTrue(foundPlayer.isPresent());
+        assertEquals("TestPlayer", foundPlayer.get().getName());
     }
-
 }

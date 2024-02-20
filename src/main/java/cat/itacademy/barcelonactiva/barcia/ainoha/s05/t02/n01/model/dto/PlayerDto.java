@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PlayerDto {
 
-    private Long id;
+    private Long idPlayer;
     private String name;
     private Date registrationDate;
     private int gamesWin;

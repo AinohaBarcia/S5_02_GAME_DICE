@@ -13,7 +13,7 @@ import java.util.Date;
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idGame;
 
     @ManyToOne
     @JoinColumn(name = "playerId")
@@ -29,11 +29,11 @@ public class Game {
     private boolean win;
 
 
-    public Game(Long id, int dice1, int dice2) {
+    public Game(Long idGame, int dice1, int dice2) {
     }
 
-    public Game(Long id, Player player, int dice1, int dice2) {
-        this.id = id;
+    public Game(Long idGame, Player player, int dice1, int dice2) {
+        this.idGame = idGame;
         this.player = player;
         this.dice1 = dice1;
         this.dice2 = dice2;

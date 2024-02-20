@@ -9,31 +9,27 @@ import java.util.List;
 public interface IPlayerService {
     PlayerDto createPlayer(PlayerDto playerDto);
 
-    PlayerDto updatePlayer(PlayerDto playerDto, Long id);
+    PlayerDto updatePlayer(PlayerDto playerDto, Long idPlayer);
 
-    PlayerDto deltePlayerById(Long id) throws PlayerException;
+    PlayerDto deltePlayerById(Long idPlayer) throws PlayerException;
 
-    PlayerDto getPlayerById(Long id) throws PlayerException;
+    PlayerDto getPlayerById(Long idPlayer) throws PlayerException;
 
     List<PlayerDto> getAllPlayers();
 
     void updateResultGame (GameDto gameDto,PlayerDto playerDto);
-    public GameDto play (Long id);
-    List<GameDto> getAllGames(Long id);
+    public GameDto play (Long idPlayer);
+    List<GameDto> getAllGames(Long idPlayer);
 
-    void deleteGames(Long id);
-
-    double calculateSuccessRate();
-
-    double calculateSuccessRate(List<PlayerDto> playerDtoList);
+    void deleteGames(Long idPlayer);
 
     double calculateSuccessRate(int totalGames, int wins);
-    List<PlayerDto>getRanking();
-    public double calculateAverageSuccesRate();
-    public PlayerDto getLoser();
-    public PlayerDto getWiner();
-    double calculateLostRate(PlayerDto playerDto);
-    void restartAverage(PlayerDto playerDto);
+    double getAverageSuccesRate();
 
+    public PlayerDto getBestWinnerPlayer();
+    PlayerDto getWorstWinnerPlayer();
+    void restartAverage(PlayerDto playerDto);
+    void updateGameWin(PlayerDto playerDto);
+    void updateGameLost (PlayerDto playerDto);
 
 }

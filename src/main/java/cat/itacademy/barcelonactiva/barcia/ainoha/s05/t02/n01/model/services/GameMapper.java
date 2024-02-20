@@ -8,7 +8,7 @@ public class GameMapper {
 
     public static GameDto mapToGameDto(Game game) {
         GameDto gameDto = new GameDto();
-        gameDto.setIdGame(game.getId());
+        gameDto.setIdGame(game.getIdGame());
         gameDto.setDice1(game.getDice1());
         gameDto.setDice2(game.getDice2());
         gameDto.setWin(game.isWin());
@@ -18,7 +18,7 @@ public class GameMapper {
 
     public static Game mapToGame(GameDto gameDto, Player player){
         Game game = new Game(player);
-        game.setId(gameDto.getIdGame());
+        game.setIdGame(gameDto.getIdGame());
         game.setDice1(gameDto.getDice1());
         game.setDice2(gameDto.getDice2());
         return game;

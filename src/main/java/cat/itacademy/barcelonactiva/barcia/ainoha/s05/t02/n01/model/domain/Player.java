@@ -3,11 +3,8 @@ package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 @Getter
@@ -19,7 +16,7 @@ public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idPlayer;
     @Column(name = "Name", length = 45, nullable = false, unique = true)
     private String name;
     @Temporal(TemporalType.DATE)

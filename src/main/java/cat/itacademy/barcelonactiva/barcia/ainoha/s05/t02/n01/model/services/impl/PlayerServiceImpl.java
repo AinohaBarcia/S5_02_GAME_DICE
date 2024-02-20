@@ -28,7 +28,7 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Override
     public PlayerDto createPlayer(PlayerDto playerDto) {
-        if (playerDto.getName().isBlank() || playerDto.getName().isBlank()) {
+        if (playerDto.getName() == null || playerDto.getName().isEmpty()) {
             playerDto.setName("Anonymous");
             Player player = PlayerMapper.mapToPlayer(playerDto);
             iPlayerRepositori.save(player);
@@ -44,9 +44,9 @@ public class PlayerServiceImpl implements IPlayerService {
         return playerDto;
     }
 
-    public PlayerDto updatePlayer(PlayerDto newplayerDto, Long id) {
+    public PlayerDto updatePlayer(PlayerDto newplayerDto, Long idPlayer) {
         Player newPlayer = PlayerMapper.mapToPlayer(newplayerDto);
-        Optional<Player> player = iPlayerRepositori.findById(id);
+        Optional<Player> player = iPlayerRepositori.findById(idPlayer);
         if (player.isPresent()) {
             Player updatedPlayer = player.get();
             if (newplayerDto.getName().isEmpty() || newplayerDto.getName().isBlank()) {
@@ -62,7 +62,7 @@ public class PlayerServiceImpl implements IPlayerService {
             iPlayerRepositori.save(updatedPlayer);
             return PlayerMapper.mapToPlayerDto(updatedPlayer);
         } else {
-            throw new PlayerException("Te player with id " + id + " doesn't exist");
+            throw new PlayerException("The player with id " + idPlayer + " doesn't exist");
         }
     }
 
@@ -89,8 +89,8 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public void deleteGames(Long id) {
-        PlayerDto playerDto = getPlayerById(id);
+    public void deleteGames(Long idPlayer) {
+        PlayerDto playerDto = getPlayerById(idPlayer);
         iGameService.deleteAllGames(PlayerMapper.mapToPlayer(playerDto));
         restartAverage(playerDto);
         iPlayerRepositori.save(PlayerMapper.mapToPlayer(playerDto));
@@ -105,27 +105,6 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public double calculateSuccessRate() {
-        return getAllPlayers().stream().mapToDouble(PlayerDto::getCalculateSuccessRate).sum();
-    }
-
-    @Override
-    public double calculateAverageSuccesRate() {
-        return 0;
-    }
-
-    @Override
-    public double calculateSuccessRate(List<PlayerDto> playerDtoList) {
-        int totalGames = 0;
-        int totalWins = 0;
-        List<Player> playerList = iPlayerRepositori.findAll();
-        for (PlayerDto playerDto : playerDtoList) {
-            totalGames += playerDto.getGameList().size();
-            totalWins += playerDto.getGamesWin();
-        }
-        return calculateSuccessRate(totalGames, totalWins);
-    }
-    @Override
     public double calculateSuccessRate(int totalGames, int wins) {
         if (totalGames == 0) {
             return 0;
@@ -134,8 +113,8 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public GameDto play(Long id) {
-        PlayerDto playerDto = getPlayerById(id);
+    public GameDto play(Long idPlayer) {
+        PlayerDto playerDto = getPlayerById(idPlayer);
         Player player = PlayerMapper.mapToPlayer(playerDto);
         GameDto gameDto = iGameService.createGame(player);
         updateResultGame(gameDto, PlayerMapper.mapToPlayerDto(player));
@@ -143,44 +122,65 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public List<GameDto> getAllGames(Long id) {
-        PlayerDto playerDto = getPlayerById(id);
+    public List<GameDto> getAllGames(Long idPlayer) {
+        PlayerDto playerDto = getPlayerById(idPlayer);
         Player player = PlayerMapper.mapToPlayer(playerDto);
         return iGameService.getAllGames(player);
         }
 
     @Override
     public void updateResultGame(GameDto gameDto, PlayerDto playerDto) {
-        if (gameDto.isGameWin()) {
-            playerDto.setGamesWin(playerDto.getGamesWin() + 1);
-            double newSuccessRate = calculateSuccessRate();
-            playerDto.setCalculateSuccessRate(newSuccessRate);
-        } else {
-            playerDto.setGamesLost(playerDto.getGamesLost() + 1);
-            double newLostRate = calculateLostRate(playerDto);
-            playerDto.setCalculateLostRate(newLostRate);
-            iPlayerRepositori.save(PlayerMapper.mapToPlayer(playerDto));
-        }
+        playerDto.setGamesLost(playerDto.getGamesLost() + 1);
+        double newSuccessRate = calculateSuccessRate(playerDto.getGamesWin(), playerDto.getGamesLost());
+        playerDto.setCalculateSuccessRate(newSuccessRate);
         iPlayerRepositori.save(PlayerMapper.mapToPlayer(playerDto));
     }
     @Override
-    public List<PlayerDto> getRanking() {
-        return getAllPlayers().stream().sorted(Comparator.comparingDouble(PlayerDto::getCalculateSuccessRate)).toList();
+    public double getAverageSuccesRate() {
+        List<PlayerDto> players = getAllPlayers();
+        return players.stream()
+                .mapToDouble(PlayerDto::getCalculateSuccessRate)
+                .average()
+                .orElse(0.0);
     }
     @Override
-    public double calculateLostRate(PlayerDto playerDto) {
-        return 100 - playerDto.getCalculateSuccessRate();
+    public PlayerDto getWorstWinnerPlayer() {
+        List<PlayerDto> playerList = getAllPlayers();
+        if (playerList.isEmpty()) {
+            return null;
+        } else {
+            playerList.sort(Comparator.comparingDouble(PlayerDto::getCalculateSuccessRate));
+            return playerList.get(0);
+        }
     }
+
+
     @Override
-    public PlayerDto getLoser() {
-        return getRanking().stream().toList().get(getRanking().size());
+    public PlayerDto getBestWinnerPlayer() {
+        List<PlayerDto> playerList = getAllPlayers();
+        if (playerList.isEmpty()) {
+            return null;
+        }
+        return playerList.stream()
+                .max(Comparator.comparingDouble(PlayerDto::getCalculateSuccessRate))
+                .orElse(null);
     }
 
     @Override
-    public PlayerDto getWiner() {
-        return getRanking().stream().toList().get(0);
+    public void updateGameWin(PlayerDto playerDto) {
+        playerDto.setGamesWin(playerDto.getGamesWin() + 1);
+        double newSuccessRate = calculateSuccessRate(playerDto.getGamesWin(), playerDto.getGamesLost());
+        playerDto.setCalculateSuccessRate(newSuccessRate);
+        iPlayerRepositori.save(PlayerMapper.mapToPlayer(playerDto));
     }
 
+    @Override
+    public void updateGameLost(PlayerDto playerDto) {
+        playerDto.setGamesLost(playerDto.getGamesLost() + 1);
+        double newSuccessRate = calculateSuccessRate(playerDto.getGamesWin(), playerDto.getGamesLost());
+        playerDto.setCalculateSuccessRate(newSuccessRate);
+        iPlayerRepositori.save(PlayerMapper.mapToPlayer(playerDto));
+    }
 
 }
 
