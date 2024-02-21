@@ -1,7 +1,7 @@
 package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.impl;
 
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.GameException;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.PlayerException;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.exceptions.GameException;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.exceptions.PlayerException;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
