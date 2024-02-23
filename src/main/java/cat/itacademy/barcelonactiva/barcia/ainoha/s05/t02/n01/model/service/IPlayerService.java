@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.exceptions.PlayerException;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
@@ -7,7 +7,7 @@ import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDt
 import java.util.List;
 
 public interface IPlayerService {
-    PlayerDto createPlayer(PlayerDto playerDto);
+    void createPlayer(PlayerDto playerDto);
 
     PlayerDto updatePlayer(PlayerDto playerDto, Long idPlayer);
 

@@ -1,8 +1,7 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
 
 import java.util.List;
 

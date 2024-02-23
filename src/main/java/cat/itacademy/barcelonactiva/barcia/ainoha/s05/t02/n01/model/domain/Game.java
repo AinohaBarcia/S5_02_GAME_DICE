@@ -16,7 +16,7 @@ public class Game {
     private Long idGame;
 
     @ManyToOne
-    @JoinColumn(name = "playerId")
+    @JoinColumn(name = "idPlayer")
     private Player player;
     @Column(name = "Dice 1", length = 15, nullable = false, unique = true)
     private int dice1;

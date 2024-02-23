@@ -1,7 +1,7 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.repository.UserRepository;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.UserService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

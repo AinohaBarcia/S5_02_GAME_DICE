@@ -5,14 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
 @Entity
-@Table(name="Player")
-public class Player {
+@Table(name="Player",uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+public class Player implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

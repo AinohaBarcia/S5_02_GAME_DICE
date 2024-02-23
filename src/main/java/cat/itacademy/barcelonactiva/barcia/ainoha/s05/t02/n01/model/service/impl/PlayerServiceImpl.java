@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.exceptions.GameException;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.exceptions.PlayerException;
@@ -6,9 +6,9 @@ import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Playe
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.repository.IPlayerRepositori;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.IGameService;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.IPlayerService;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.PlayerMapper;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.IGameService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.IPlayerService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.PlayerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,22 +27,20 @@ public class PlayerServiceImpl implements IPlayerService {
     private IGameService iGameService;
 
     @Override
-    public PlayerDto createPlayer(PlayerDto playerDto) {
-        if (playerDto.getName() == null || playerDto.getName().isEmpty()) {
+    public void createPlayer(PlayerDto playerDto) {
+        if (playerDto.getName() == null || playerDto.getName().trim().isEmpty()) {
             playerDto.setName("Anonymous");
-            Player player = PlayerMapper.mapToPlayer(playerDto);
-            iPlayerRepositori.save(player);
-        } else {
-            Player player = PlayerMapper.mapToPlayer(playerDto);
-            Optional<Player> playerName = iPlayerRepositori.findByName(player.getName());
-            if (playerName.isPresent()) {
-                throw new PlayerException("This name has been created");
-            } else {
-                iPlayerRepositori.save(player);
-            }
         }
-        return playerDto;
+        Player player = PlayerMapper.mapToPlayer(playerDto);
+        Optional<Player> playerName = iPlayerRepositori.findByName(player.getName());
+        if (playerName.isPresent()) {
+            throw new PlayerException("This name has been created");
+        }
+        iPlayerRepositori.save(player);
+
+
     }
+
 
     public PlayerDto updatePlayer(PlayerDto newplayerDto, Long idPlayer) {
         Player newPlayer = PlayerMapper.mapToPlayer(newplayerDto);

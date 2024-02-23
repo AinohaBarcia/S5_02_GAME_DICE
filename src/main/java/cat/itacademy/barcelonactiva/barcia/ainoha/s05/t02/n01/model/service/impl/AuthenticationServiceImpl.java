@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
 
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.User;
@@ -6,8 +6,8 @@ import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.request.
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.request.SignUpRequest;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.response.JwtAuthenticationResponse;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.repository.UserRepository;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.AuthenticationService;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.JwtService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.AuthenticationService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

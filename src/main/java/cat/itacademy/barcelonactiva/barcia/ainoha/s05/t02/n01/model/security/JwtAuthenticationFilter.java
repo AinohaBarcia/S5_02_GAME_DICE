@@ -1,7 +1,7 @@
 package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.security;
 
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.JwtService;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.UserService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.JwtService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((javax.servlet.http.HttpServletRequest) request));
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails( request));
                 context.setAuthentication(authToken);
                 SecurityContextHolder.setContext(context);
             }

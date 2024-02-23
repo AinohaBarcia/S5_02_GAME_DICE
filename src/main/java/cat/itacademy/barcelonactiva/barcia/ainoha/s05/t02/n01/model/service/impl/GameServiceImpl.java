@@ -1,11 +1,11 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Game;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.repository.IGameRepositori;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.GameMapper;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.IGameService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.GameMapper;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.IGameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

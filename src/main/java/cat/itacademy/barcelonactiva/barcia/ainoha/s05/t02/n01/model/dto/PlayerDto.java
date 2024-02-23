@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 @Getter
@@ -23,5 +24,8 @@ public class PlayerDto {
     private double calculateLostRate;
     private List<Game> gameList;
 
+    public PlayerDto (String name){
+        this.name = name;
+    }
 
 }

@@ -1,6 +1,6 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
 
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.services.JwtService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -57,8 +57,12 @@ public class JwtServiceImpl implements JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(token)
-                .getBody();
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
     }
 
     private SecretKey getSigningKey() {
