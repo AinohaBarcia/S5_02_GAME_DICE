@@ -1,23 +1,23 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.impl;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Game;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.repository.IGameRepositori;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.GameMapper;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.IGameService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.IGameRepositori;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.GameMapper;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.IGameService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 @Service
 @RequiredArgsConstructor
 public class GameServiceImpl implements IGameService {
 
-    @Autowired
     private IGameRepositori iGameRepositori;
 
     @Override

@@ -2,7 +2,7 @@ package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.controllers;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.IPlayerService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.IPlayerService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

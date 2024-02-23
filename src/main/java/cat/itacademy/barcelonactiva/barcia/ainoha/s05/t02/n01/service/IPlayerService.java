@@ -1,6 +1,6 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service;
 
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.exceptions.PlayerException;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.exceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
 
@@ -11,9 +11,9 @@ public interface IPlayerService {
 
     PlayerDto updatePlayer(PlayerDto playerDto, Long idPlayer);
 
-    PlayerDto deltePlayerById(Long idPlayer) throws PlayerException;
+    PlayerDto deltePlayerById(Long idPlayer) throws PlayerNotFoundException;
 
-    PlayerDto getPlayerById(Long idPlayer) throws PlayerException;
+    PlayerDto getPlayerById(Long idPlayer) throws PlayerNotFoundException;
 
     List<PlayerDto> getAllPlayers();
 

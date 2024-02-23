@@ -1,19 +1,17 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.impl;
 
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.repository.UserRepository;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.UserService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.UserRepository;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
 
     @Override
     public UserDetailsService userDetailsService() {

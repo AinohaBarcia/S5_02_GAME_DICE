@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.repository;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Game;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;

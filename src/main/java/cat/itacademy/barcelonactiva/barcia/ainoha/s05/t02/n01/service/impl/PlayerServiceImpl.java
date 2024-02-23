@@ -1,16 +1,15 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.impl;
 
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.exceptions.GameException;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.exceptions.PlayerException;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.exceptions.PlayerAlreadyExistsException;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.exceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.repository.IPlayerRepositori;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.IGameService;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.IPlayerService;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.PlayerMapper;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.IPlayerRepositori;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.IGameService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.IPlayerService;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.PlayerMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -21,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements IPlayerService {
-    @Autowired
+
     private IPlayerRepositori iPlayerRepositori;
-    @Autowired
+
     private IGameService iGameService;
 
     @Override
@@ -34,7 +33,7 @@ public class PlayerServiceImpl implements IPlayerService {
         Player player = PlayerMapper.mapToPlayer(playerDto);
         Optional<Player> playerName = iPlayerRepositori.findByName(player.getName());
         if (playerName.isPresent()) {
-            throw new PlayerException("This name has been created");
+            throw new PlayerAlreadyExistsException("This name has been created");
         }
         iPlayerRepositori.save(player);
 
@@ -52,7 +51,7 @@ public class PlayerServiceImpl implements IPlayerService {
             } else {
                 Optional<Player> playerName = iPlayerRepositori.findByName(newPlayer.getName());
                 if (playerName.isPresent()) {
-                    throw new PlayerException("This name is already created");
+                    throw new PlayerAlreadyExistsException("This name is already created");
                 } else {
                     updatedPlayer.setName(newPlayer.getName());
                 }
@@ -60,24 +59,24 @@ public class PlayerServiceImpl implements IPlayerService {
             iPlayerRepositori.save(updatedPlayer);
             return PlayerMapper.mapToPlayerDto(updatedPlayer);
         } else {
-            throw new PlayerException("The player with id " + idPlayer + " doesn't exist");
+            throw new PlayerNotFoundException("The player with id " + idPlayer + " doesn't exist");
         }
     }
 
 
     @Override
-    public PlayerDto deltePlayerById(Long id) throws PlayerException {
+    public PlayerDto deltePlayerById(Long id) throws PlayerNotFoundException {
         return iPlayerRepositori.findById(id).map(player -> {
             iPlayerRepositori.deleteById(id);
             System.out.println("Player with id: " + id + " is deleted");
             return PlayerMapper.mapToPlayerDto(player);
-        }).orElseThrow(() -> new GameException("Player with id " + id + " not found"));
+        }).orElseThrow(() -> new PlayerNotFoundException("Player with id " + id + " not found"));
 
     }
 
     @Override
-    public PlayerDto getPlayerById(Long id) throws PlayerException {
-        return PlayerMapper.mapToPlayerDto(iPlayerRepositori.findById(id).orElseThrow(() -> new GameException("Player with id " + id + " not found")));
+    public PlayerDto getPlayerById(Long id) throws PlayerNotFoundException {
+        return PlayerMapper.mapToPlayerDto(iPlayerRepositori.findById(id).orElseThrow(() -> new PlayerNotFoundException("Player with id " + id + " not found")));
     }
 
     @Override

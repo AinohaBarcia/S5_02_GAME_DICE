@@ -1,12 +1,12 @@
-package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.impl;
+package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.impl;
 
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.service.JwtService;
+
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -42,13 +42,16 @@ public class JwtServiceImpl implements JwtService {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
-
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 30))
-                .signWith(SignatureAlgorithm.HS256, getSigningKey()).compact();
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 7))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -56,13 +59,13 @@ public class JwtServiceImpl implements JwtService {
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-
     }
 
     private SecretKey getSigningKey() {

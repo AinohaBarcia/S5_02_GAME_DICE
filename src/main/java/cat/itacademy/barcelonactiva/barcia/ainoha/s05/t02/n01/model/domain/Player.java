@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -35,5 +36,5 @@ public class Player implements Serializable {
 
     @OneToMany(mappedBy = "player", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Game> gameList;
-    public Player(){this.registrationDate=new Date();}
+    public Player(){this.registrationDate=Date.from(Instant.now());}
 }
