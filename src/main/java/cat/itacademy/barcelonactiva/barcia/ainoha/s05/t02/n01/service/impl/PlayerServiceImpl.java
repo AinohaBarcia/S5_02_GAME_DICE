@@ -35,7 +35,7 @@ public class PlayerServiceImpl implements IPlayerService {
         Player player = PlayerMapper.mapToPlayer(playerDto);
         Optional<Player> playerName = iPlayerRepositori.findByName(player.getName());
         if (playerName.isPresent()) {
-            throw new PlayerAlreadyExistsException("This name has been created");
+            throw new PlayerAlreadyExistsException("This player has been created");
         }
         iPlayerRepositori.save(player);
     }

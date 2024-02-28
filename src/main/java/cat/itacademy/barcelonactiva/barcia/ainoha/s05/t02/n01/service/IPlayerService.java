@@ -10,14 +10,11 @@ import java.util.Optional;
 
 public interface IPlayerService {
     void createPlayer(PlayerDto playerDto);
-
     PlayerDto updatePlayer(PlayerDto playerDto, Long idPlayer);
-
     PlayerDto deltePlayerById(Long idPlayer) throws PlayerNotFoundException;
-
     PlayerDto getPlayerById(Long idPlayer) throws PlayerNotFoundException;
-
     List<Player> getAllPlayers();
+
     public GameDto play (Long idPlayer);
     List<GameDto> getAllGames(Long idPlayer);
     void deleteAllGames(Long idGame);
