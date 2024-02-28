@@ -20,11 +20,9 @@ public interface IPlayerService {
     List<Player> getAllPlayers();
     public GameDto play (Long idPlayer);
     List<GameDto> getAllGames(Long idPlayer);
-    //List<PlayerDto> getAllPlayersWithTotals();
     void deleteAllGames(Long idGame);
     double calculateSuccessRate(int totalGames,int wins);
     List<PlayerDto> getAverageSuccesRate();
-
     public PlayerDto getBestWinnerPlayer();
     PlayerDto getWorstWinnerPlayer();
     void restartAverage(PlayerDto playerDto);

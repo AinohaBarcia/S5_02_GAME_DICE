@@ -32,15 +32,6 @@ public class GameController {
         iPlayerService.createPlayer(playerDto);
         return new ResponseEntity<>("Player is created",HttpStatus.CREATED);
     }
-    /*@GetMapping("/getAllPlayers")
-    public ResponseEntity<List<PlayerDto>> getAllPlayers() {
-        List<PlayerDto> playerDtoListWithTotals = iPlayerService.getAllPlayersWithTotals();
-        if (playerDtoListWithTotals.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(p, HttpStatus.OK);
-        }
-    }*/
     @GetMapping("/getAllPlayers")
     public ResponseEntity<List<Player>> getAllPlayers() {
        List<Player> players=iPlayerService.getAllPlayers();
@@ -91,9 +82,6 @@ public class GameController {
     @GetMapping("/getRanking")
     public ResponseEntity<List<PlayerDto>>getAverageSuccesRate() {
         List<PlayerDto> playersRanking = iPlayerService.getAverageSuccesRate();
-        //List<PlayerDto> playersRanking = new ArrayList<>();
-        //players.stream().toList().forEach(l -> playersRanking.add(PlayerMapper.mapToPlayerDto(1)));
-        //playersRanking.sort(Comparator.comparing(PlayerDTO::getPercentageWonDTO));
         if(playersRanking.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{

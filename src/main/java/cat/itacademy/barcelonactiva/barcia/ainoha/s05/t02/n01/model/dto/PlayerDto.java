@@ -19,13 +19,11 @@ public class PlayerDto {
     private String name;
     private Date registrationDate;
     private int gamesWin;
-    private double calculateSuccessRate;
     private int gamesLost;
     private double calculateLostRate;
+    private double CalculateSuccessRate;
     @JsonIgnore
     private List<Game> gameList;
-    private int totalGames;
-    private int totalWins;
     public PlayerDto (String name){
         this.name = name;
     }
