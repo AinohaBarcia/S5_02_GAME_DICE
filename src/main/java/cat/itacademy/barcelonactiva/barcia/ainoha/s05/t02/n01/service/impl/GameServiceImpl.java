@@ -7,6 +7,7 @@ import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.IGameRe
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.GameMapper;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.IGameService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,21 +18,22 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class GameServiceImpl implements IGameService {
-
+    @Autowired
     private IGameRepositori iGameRepositori;
 
     @Override
     public GameDto createGame(Player player) {
         GameDto gameDto = new GameDto();
         Game game = GameMapper.mapToGame(gameDto,player);
+        game.setPlayer(player);
+        game.setWin(gameDto.isGameWin());
         iGameRepositori.save(game);
-        return GameMapper.mapToGameDto(game);
+        return gameDto;
     }
-    @Override
-    public void deleteAllGames (Player player){
-        List<Game>gameList=player.getGameList();
-        gameList.forEach(gameList::remove);
 
+    @Override
+    public void deleteGame(Long idGame) {
+        iGameRepositori.deleteById(idGame);
     }
 
     @Override

@@ -20,10 +20,10 @@ public class Player implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPlayer;
-    @Column(name = "Name", length = 45, nullable = false, unique = true)
+    //@Column(name = "Name", length = 45, nullable = true, unique = true)
     private String name;
     @Temporal(TemporalType.DATE)
-    @Column(name = "Registration date", nullable = false, length = 25)
+    //@Column(name = "Registration date", nullable = true, length = 25)
     private Date registrationDate;
     @Column(name = "Wins")
     private int gamesWin;
@@ -33,8 +33,14 @@ public class Player implements Serializable {
     private int gamesLost;
     @Column(name = "Average lost")
     private double calculateLostRate;
-
     @OneToMany(mappedBy = "player", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Game> gameList;
-    public Player(){this.registrationDate=Date.from(Instant.now());}
+    public Player(Long idPlayer, String name){
+        this.idPlayer=idPlayer;
+        this.name=name;
+        this.registrationDate= new Date();}
+
+    public Player() {
+
+    }
 }

@@ -13,7 +13,6 @@ public class GameDto {
     private Long idGame;
     private int dice1;
     private int dice2;
-    private Timestamp playedTime;
     private boolean win;
 
 
@@ -21,7 +20,7 @@ public class GameDto {
     public GameDto() {
         this.dice1 = diceRandomNum();
         this.dice2 = diceRandomNum();
-        this.win = isGameWin();
+
     }
 
     public int diceRandomNum() {
@@ -30,5 +29,9 @@ public class GameDto {
 
     public boolean isGameWin() {
         return dice1 + dice2 == 7;
+    }
+    public boolean isWin() {
+        win = isGameWin();
+        return win;
     }
 }

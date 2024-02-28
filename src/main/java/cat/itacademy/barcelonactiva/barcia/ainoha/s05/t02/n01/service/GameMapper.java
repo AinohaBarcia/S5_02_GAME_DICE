@@ -21,6 +21,7 @@ public class GameMapper {
         game.setIdGame(gameDto.getIdGame());
         game.setDice1(gameDto.getDice1());
         game.setDice2(gameDto.getDice2());
+        game.setWin(gameDto.isGameWin());
         return game;
     }
 

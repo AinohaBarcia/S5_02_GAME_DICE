@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface IPlayerRepositori extends JpaRepository<Player, Long> {
 
     Optional<Player> findByName(String name);
+
 }

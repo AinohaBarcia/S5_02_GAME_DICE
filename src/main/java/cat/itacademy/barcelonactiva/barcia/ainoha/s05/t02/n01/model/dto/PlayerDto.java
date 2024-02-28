@@ -1,12 +1,12 @@
 package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Game;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 @Getter
@@ -22,10 +22,14 @@ public class PlayerDto {
     private double calculateSuccessRate;
     private int gamesLost;
     private double calculateLostRate;
+    @JsonIgnore
     private List<Game> gameList;
-
+    private int totalGames;
+    private int totalWins;
     public PlayerDto (String name){
         this.name = name;
     }
+
+
 
 }

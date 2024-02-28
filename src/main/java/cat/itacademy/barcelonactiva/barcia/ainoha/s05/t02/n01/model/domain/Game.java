@@ -18,13 +18,10 @@ public class Game {
     @ManyToOne
     @JoinColumn(name = "id_Player")
     private Player player;
-    @Column(name = "Dice 1", length = 15, nullable = false, unique = true)
+    @Column(name = "Dice 1", length = 15, nullable = false)
     private int dice1;
-    @Column(name = "Dice 2", length = 15, nullable = false, unique = true)
+    @Column(name = "Dice 2", length = 15, nullable = false)
     private int dice2;
-
-    @Column(name = "Game date", nullable = false, length = 25)
-    private Date registrationDate;
     @Column(name = "Game won", nullable = false, length = 25)
     private boolean win;
 
@@ -37,7 +34,6 @@ public class Game {
         this.player = player;
         this.dice1 = dice1;
         this.dice2 = dice2;
-        this.registrationDate = Date.from(Instant.now());
     }
     public Game(){}
     public Game(Player playere) {
