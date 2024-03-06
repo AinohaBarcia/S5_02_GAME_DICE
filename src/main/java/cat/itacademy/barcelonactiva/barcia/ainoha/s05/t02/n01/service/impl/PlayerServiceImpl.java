@@ -2,8 +2,7 @@ package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.impl;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.exceptions.PlayerAlreadyExistsException;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.exceptions.PlayerNotFoundException;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Game;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Game;import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.IPlayerRepositori;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements IPlayerService {
     @Autowired
-    private IPlayerRepositori iPlayerRepositori;
+    private final IPlayerRepositori iPlayerRepositori;
     @Autowired
     private IGameService iGameService;
 
@@ -39,6 +38,7 @@ public class PlayerServiceImpl implements IPlayerService {
         }
         iPlayerRepositori.save(player);
     }
+
     @Override
     public PlayerDto updatePlayer(PlayerDto newplayerDto, Long idPlayer) {
         Player newPlayer = PlayerMapper.mapToPlayer(newplayerDto);
@@ -47,18 +47,18 @@ public class PlayerServiceImpl implements IPlayerService {
             throw new PlayerNotFoundException("The player with id " + idPlayer + " doesn't exist");
         });
 
-            if (!newplayerDto.getName().isEmpty() || !newplayerDto.getName().isBlank()) {
-                Optional<Player> playerName = iPlayerRepositori.findByName(newPlayer.getName());
-                playerName.ifPresent(existingPlayer ->{
-                    throw new PlayerAlreadyExistsException("This name is already created");
-                });
-                player.setName(newPlayer.getName());
-            } else {
-                player.setName("ANONYMOUS");
-            }
-            iPlayerRepositori.save(player);
+        if (!newplayerDto.getName().isEmpty() || !newplayerDto.getName().isBlank()) {
+            Optional<Player> playerName = iPlayerRepositori.findByName(newPlayer.getName());
+            playerName.ifPresent(existingPlayer -> {
+                throw new PlayerAlreadyExistsException("This name is already created");
+            });
+            player.setName(newPlayer.getName());
+        } else {
+            player.setName("ANONYMOUS");
+        }
+        iPlayerRepositori.save(player);
 
-            return PlayerMapper.mapToPlayerDto(player);
+        return PlayerMapper.mapToPlayerDto(player);
     }
 
 
@@ -77,10 +77,11 @@ public class PlayerServiceImpl implements IPlayerService {
         return PlayerMapper.mapToPlayerDto(iPlayerRepositori.findById(id).orElseThrow(() -> new PlayerNotFoundException("Player with id " + id + " not found")));
     }
 
-   @Override
-   public List<Player> getAllPlayers() {
-       return iPlayerRepositori.findAll();
-   }
+    @Override
+    public List<Player> getAllPlayers() {
+        return iPlayerRepositori.findAll();
+    }
+
     @Override
     public void deleteAllGames(Long idPlayer) {
         PlayerDto playerDto = getPlayerById(idPlayer);
@@ -97,13 +98,15 @@ public class PlayerServiceImpl implements IPlayerService {
             playerDto.setGamesWin(0);
         }
     }
-   @Override
-   public double calculateSuccessRate(int totalGames, int wins) {
-       if (totalGames == 0) {
-           return 0;
-       }
-       return ((double)wins / totalGames) * 100;
-   }
+
+    @Override
+    public double calculateSuccessRate(int totalGames, int wins) {
+        if (totalGames == 0) {
+            return 0;
+        }
+        return ((double) wins / totalGames) * 100;
+    }
+
     public double calculatePlayerSuccessRate(Long playerId) {
         PlayerDto playerDto = getPlayerById(playerId);
         List<GameDto> playerGames = getAllGames(playerId);
@@ -118,11 +121,12 @@ public class PlayerServiceImpl implements IPlayerService {
 
         return calculateSuccessRate(totalGames, wins);
     }
+
     @Override
     public GameDto play(Long idPlayer) {
         Optional<Player> playerSerch = iPlayerRepositori.findById(idPlayer);
 
-        if(playerSerch.isPresent()){
+        if (playerSerch.isPresent()) {
             Player player = playerSerch.get();
             GameDto gameDto = iGameService.createGame(player);
 
@@ -138,6 +142,7 @@ public class PlayerServiceImpl implements IPlayerService {
             throw new PlayerNotFoundException("This player doesn't exist");
         }
     }
+
     @Override
     public List<GameDto> getAllGames(Long idPlayer) {
         PlayerDto playerDto = getPlayerById(idPlayer);
@@ -146,56 +151,82 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public List<PlayerDto> getAverageSuccesRate() {
+    public double getAverageSuccessRate() {
         List<Player> players = iPlayerRepositori.findAll();
-        List<PlayerDto> playersRanking = new ArrayList<>();
-        players.stream().toList().forEach(l -> playersRanking.add(PlayerMapper.mapToPlayerDto(l)));
-        playersRanking.sort(Comparator.comparing(PlayerDto::getGamesWin));
-        if(playersRanking.isEmpty()){
+
+        if (players.isEmpty()) {
             throw new PlayerNotFoundException("No games played.");
         }
-        return playersRanking;
+        double totalSuccessRate = players.stream()
+                .mapToDouble(Player::getCalculateSuccessRate)
+                .average()
+                .orElse(0.0);
+
+        return totalSuccessRate;
     }
+
     @Override
     public PlayerDto getWorstWinnerPlayer() {
-        return getAverageSuccesRate().stream().toList().get(getAverageSuccesRate().size()-1);
+        List<PlayerDto> playerList = iPlayerRepositori.findAll().stream()
+                .map(PlayerMapper::mapToPlayerDto)
+                .sorted(Comparator.comparingDouble(PlayerDto::getCalculateSuccessRate))
+                .collect(Collectors.toList());
+
+        if (playerList.isEmpty()) {
+            throw new PlayerNotFoundException("No players found.");
+        }
+
+        return playerList.get(playerList.size() - 1);
     }
+
     @Override
     public PlayerDto getBestWinnerPlayer() {
-        return getAverageSuccesRate().stream().toList().get(0);
-    }
-    @Override
-    public void updateGameWin(Long idPlayer) {
-        Optional<Player>playerSerch = iPlayerRepositori.findById(idPlayer);
-        if(playerSerch.isPresent()){
-            Player player = playerSerch.get();
-            PlayerDto playerDto = PlayerMapper.mapToPlayerDto(player);
-            playerDto.setGamesWin(playerDto.getGamesWin() + 1);
-            double newSuccessRate = ((double)playerDto.getGamesWin()/ (playerDto.getGameList().size()-1)) * 100;
-            playerDto.setCalculateSuccessRate(newSuccessRate);
-            iPlayerRepositori.save(PlayerMapper.mapToPlayer(playerDto));
-            }else{
-            throw new PlayerNotFoundException("Player doesn't exist");
+            List<PlayerDto> playerList = iPlayerRepositori.findAll().stream()
+                    .map(PlayerMapper::mapToPlayerDto)
+                    .sorted(Comparator.comparingDouble(PlayerDto::getCalculateSuccessRate).reversed())
+                    .collect(Collectors.toList());
+
+            if (playerList.isEmpty()) {
+                throw new PlayerNotFoundException("No players found.");
+            }
+
+            return playerList.get(0);
+        }
+        @Override
+        public void updateGameWin (Long idPlayer){
+            Optional<Player> playerSearch = iPlayerRepositori.findById(idPlayer);
+            if (playerSearch.isPresent()) {
+                Player player = playerSearch.get();
+                player.setGamesWin(player.getGamesWin() + 1);
+                double newSuccessRate = ((double) player.getGamesWin() / player.getGameList().size()) * 100;
+                player.setCalculateSuccessRate(newSuccessRate);
+                iPlayerRepositori.save(player);
+            } else {
+                throw new PlayerNotFoundException("Player doesn't exist");
+            }
+        }
+
+        @Override
+        public void updateGameLost (Long idPlayer){
+            Optional<Player> playerSearch = iPlayerRepositori.findById(idPlayer);
+            if (playerSearch.isPresent()) {
+                Player player = playerSearch.get();
+                player.setGamesLost(player.getGamesLost() + 1);
+
+                // Calcular la tasa de fracaso solo si la lista de juegos no es nula
+                if (player.getGameList() != null) {
+                    double newLostRate = 100 - (((double) player.getGamesLost() / player.getGameList().size()) * 100.0);
+                    player.setCalculateLostRate(newLostRate);
+                }
+
+                iPlayerRepositori.save(player);
+            } else {
+                throw new PlayerNotFoundException("Player doesn't exist");
+            }
         }
     }
 
-    @Override
-    public void updateGameLost(Long idPlayer) {
-        Optional<Player>playerSerch = iPlayerRepositori.findById(idPlayer);
-        if(playerSerch.isPresent()){
-            Player player = playerSerch.get();
-            PlayerDto playerDto = PlayerMapper.mapToPlayerDto(player);
-            playerDto.setGamesLost(playerDto.getGamesLost() + 1);
-            double newLostRate = 100 - (((double)playerDto.getGamesLost()/ (playerDto.getGameList().size()-1))* 100.0);
-            playerDto.setCalculateLostRate(newLostRate);
-            iPlayerRepositori.save(PlayerMapper.mapToPlayer(playerDto));
-        }else{
-            throw new PlayerNotFoundException("Player doesn't exist");
-        }
-    }
 
-
-}
 
 
 

@@ -19,7 +19,7 @@ public interface IPlayerService {
     List<GameDto> getAllGames(Long idPlayer);
     void deleteAllGames(Long idGame);
     double calculateSuccessRate(int totalGames,int wins);
-    List<PlayerDto> getAverageSuccesRate();
+    double getAverageSuccessRate();
     public PlayerDto getBestWinnerPlayer();
     PlayerDto getWorstWinnerPlayer();
     void restartAverage(PlayerDto playerDto);

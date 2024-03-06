@@ -24,6 +24,7 @@ public class PlayerDto {
     private double CalculateSuccessRate;
     @JsonIgnore
     private List<Game> gameList;
+
     public PlayerDto (String name){
         this.name = name;
     }

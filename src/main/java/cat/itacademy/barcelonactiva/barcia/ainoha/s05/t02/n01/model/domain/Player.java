@@ -1,5 +1,6 @@
 package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class Player implements Serializable {
     private int gamesLost;
     @Column(name = "Average lost")
     private double calculateLostRate;
+    @JsonIgnore
     @OneToMany(mappedBy = "player", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Game> gameList;
     public Player(Long idPlayer, String name){

@@ -1,5 +1,6 @@
 package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.controllers;
 
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.exceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
@@ -80,13 +81,13 @@ public class GameController {
     }
 
     @GetMapping("/getRanking")
-    public ResponseEntity<List<PlayerDto>>getAverageSuccesRate() {
-        List<PlayerDto> playersRanking = iPlayerService.getAverageSuccesRate();
-        if(playersRanking.isEmpty()){
+    public ResponseEntity<Double>getAverageSuccesRate() {
+        try {
+            double averageSuccessRate = iPlayerService.getAverageSuccessRate();
+            return new ResponseEntity<>(averageSuccessRate, HttpStatus.OK);
+        } catch (PlayerNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<>(playersRanking,HttpStatus.OK) ;
-    }
+        }
     }
 
     @GetMapping("/getBestWinnerPlayer")
