@@ -22,16 +22,20 @@ public class GameDto {
         this.dice2 = diceRandomNum();
 
     }
+    public GameDto(int dice1, int dice2) {
+        this.dice1 = dice1;
+        this.dice2 = dice2;
+    }
 
     public int diceRandomNum() {
         return (int) (Math.random() * 6 + 1);
     }
 
-    public boolean isGameWin() {
+    public boolean getisGameWin() {
         return dice1 + dice2 == 7;
     }
-    public boolean isWin() {
-        win = isGameWin();
+    public boolean getIsWin() {
+        win = getisGameWin();
         return win;
     }
 }

@@ -3,7 +3,7 @@ package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.impl;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Game;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.IGameRepositori;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.IGameRepository;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.GameMapper;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.IGameService;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +19,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GameServiceImpl implements IGameService {
     @Autowired
-    private IGameRepositori iGameRepositori;
+    private IGameRepository iGameRepositori;
+    public GameServiceImpl(IGameRepository iGameRepository){}
 
     @Override
     public GameDto createGame(Player player) {
         GameDto gameDto = new GameDto();
         Game game = GameMapper.mapToGame(gameDto,player);
         game.setPlayer(player);
-        game.setWin(gameDto.isGameWin());
+        game.setWin(gameDto.getisGameWin());
         iGameRepositori.save(game);
         return gameDto;
     }

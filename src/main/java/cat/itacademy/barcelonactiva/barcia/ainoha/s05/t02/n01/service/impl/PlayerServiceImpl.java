@@ -2,10 +2,10 @@ package cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.impl;
 
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.exceptions.PlayerAlreadyExistsException;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.exceptions.PlayerNotFoundException;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Game;import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.domain.Player;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
-import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.IPlayerRepositori;
+import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.repository.IPlayerRepository;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.IGameService;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.IPlayerService;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.service.PlayerMapper;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements IPlayerService {
     @Autowired
-    private final IPlayerRepositori iPlayerRepositori;
+    private final IPlayerRepository iPlayerRepositori;
     @Autowired
     private IGameService iGameService;
 
@@ -145,9 +145,10 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Override
     public List<GameDto> getAllGames(Long idPlayer) {
-        PlayerDto playerDto = getPlayerById(idPlayer);
+       PlayerDto playerDto = getPlayerById(idPlayer);
         Player player = PlayerMapper.mapToPlayer(playerDto);
         return iGameService.getAllGames(player);
+
     }
 
     @Override
@@ -177,6 +178,7 @@ public class PlayerServiceImpl implements IPlayerService {
         }
 
         return playerList.get(playerList.size() - 1);
+
     }
 
     @Override
@@ -213,7 +215,6 @@ public class PlayerServiceImpl implements IPlayerService {
                 Player player = playerSearch.get();
                 player.setGamesLost(player.getGamesLost() + 1);
 
-                // Calcular la tasa de fracaso solo si la lista de juegos no es nula
                 if (player.getGameList() != null) {
                     double newLostRate = 100 - (((double) player.getGamesLost() / player.getGameList().size()) * 100.0);
                     player.setCalculateLostRate(newLostRate);

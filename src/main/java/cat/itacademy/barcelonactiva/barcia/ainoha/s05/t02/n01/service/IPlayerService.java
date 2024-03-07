@@ -6,7 +6,6 @@ import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.GameDto;
 import cat.itacademy.barcelonactiva.barcia.ainoha.s05.t02.n01.model.dto.PlayerDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IPlayerService {
     void createPlayer(PlayerDto playerDto);
@@ -14,7 +13,6 @@ public interface IPlayerService {
     PlayerDto deltePlayerById(Long idPlayer) throws PlayerNotFoundException;
     PlayerDto getPlayerById(Long idPlayer) throws PlayerNotFoundException;
     List<Player> getAllPlayers();
-
     public GameDto play (Long idPlayer);
     List<GameDto> getAllGames(Long idPlayer);
     void deleteAllGames(Long idGame);
